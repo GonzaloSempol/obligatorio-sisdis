@@ -1,6 +1,22 @@
 # obligatorio-sisdis
 
-Correr docker compose up en la carpeta raiz del proyecto.  
+Para correr por 1era vez:  
+1) Tener nodejs instalado https://nodejs.org/es/download/  
+
+2) Instalar las dependencias necesarias en los 2 backends
+2.1) correr comando: 
+       npm install --include=dev 
+       en la carpeta: obligatorio-sisdis\backend-voto-node\app  
+2.2) correr comando: 
+       npm install --include=dev 
+       en la carpeta obligatorio-sisdis\backend-corte-node\app
+ 
+3) Correr docker compose up en la carpeta raiz del proyecto.  
+Esto levanta todos los servicios y monta las carpetas en los contenedores,  
+de esta manera los cambios hechos se refrescan automaticamente.  
+
+Para correr por segunda vez ya no es necesario instalar dependencias.  
+
 
 Estructura base dockerizada con 4 servicios y 2 endpoints  
 db-votos-mongo  

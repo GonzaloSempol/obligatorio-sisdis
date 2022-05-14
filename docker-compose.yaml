@@ -29,6 +29,7 @@ services:
     volumes:
        - '.\backend-voto-node\app:/app'
 
+
   backend-corte-node:
     build: '.\backend-corte-node\app'
     depends_on:
@@ -38,6 +39,7 @@ services:
       - 8081:8081
     volumes:
        - '.\backend-corte-node\app:/app'
+
   #------------------------------------------------------------------------
 
 
