@@ -4,10 +4,10 @@ Para correr por 1era vez:
 1) Tener nodejs instalado https://nodejs.org/es/download/  
 
 2) Instalar las dependencias necesarias en los 2 backends
-  2.1) correr comando:   
+  1) correr comando:   
        npm install --include=dev   
        en la carpeta: obligatorio-sisdis\backend-voto-node\app    
-2.2) correr comando:   
+  2) correr comando:   
        npm install --include=dev   
        en la carpeta obligatorio-sisdis\backend-corte-node\app  
  
