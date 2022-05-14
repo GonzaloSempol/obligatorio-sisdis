@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+
+  #DATABASES--------------------------------------------------------------
+  db-votos-mongo:
+    image: mongo:4.4.14
+    ports:
+      - 27017:27017 #solo para testing
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+  
+  db-cache-redis:
+    image: redis:7.0.0-alpine
+    ports:
+      - 6379:6379 #solo para testing
+  #------------------------------------------------------------------------
+
+
+  #BACKENDS----------------------------------------------------------------
+  backend-voto-node:
+    build: '.\backend-voto-node\app'
+    depends_on:
+      - db-votos-mongo
+      - db-cache-redis
+    ports: 
+      - 8080:8080
+    volumes:
+       - '.\backend-voto-node\app:/app'
+
+  backend-corte-node:
+    build: '.\backend-corte-node\app'
+    depends_on:
+      - db-votos-mongo
+      - db-cache-redis
+    ports: 
+      - 8081:8081
+    volumes:
+       - '.\backend-corte-node\app:/app'
+  #------------------------------------------------------------------------
+
+
+  #OPCIONALES--------------------------------------------------------------
+  #gestor de mongodb - para testing
+  mongo-express:
+    image: mongo-express
+    ports:
+      - 8082:8081 #solo para testing
+    depends_on:
+      - db-votos-mongo
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: root
+      ME_CONFIG_MONGODB_URL: mongodb://root:root@mongo:27017/
+  #------------------------------------------------------------------------
+
