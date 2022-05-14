@@ -5,11 +5,11 @@ Para correr por 1era vez:
 
 2) Instalar las dependencias necesarias en los 2 backends
 2.1) correr comando: 
-       npm install --include=dev 
-       en la carpeta: obligatorio-sisdis\backend-voto-node\app  
-2.2) correr comando: 
-       npm install --include=dev 
-       en la carpeta obligatorio-sisdis\backend-corte-node\app
+       npm install --include=dev   
+       en la carpeta: obligatorio-sisdis\backend-voto-node\app    
+2.2) correr comando:   
+       npm install --include=dev   
+       en la carpeta obligatorio-sisdis\backend-corte-node\app  
  
 3) Correr docker compose up en la carpeta raiz del proyecto.  
 Esto levanta todos los servicios y monta las carpetas en los contenedores,  
