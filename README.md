@@ -4,11 +4,9 @@ Para correr por 1era vez:
 1) Tener nodejs instalado https://nodejs.org/es/download/  
 
 2) Instalar las dependencias necesarias en los 2 backends  
-    correr comando:   
-       npm install --include=dev   
+    correr comando: npm install --include=dev   
        en la carpeta: obligatorio-sisdis\backend-voto-node\app    
-    correr comando:   
-       npm install --include=dev   
+    correr comando: npm install --include=dev   
        en la carpeta obligatorio-sisdis\backend-corte-node\app  
  
 3) Correr docker compose up en la carpeta raiz del proyecto.  
