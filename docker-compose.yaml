@@ -11,7 +11,7 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
   
-  db-cache-redis:
+  db-auth-redis:
     image: redis:7.0.0-alpine
     ports:
       - 6379:6379 #solo para testing
