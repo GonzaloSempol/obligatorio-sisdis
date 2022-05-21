@@ -18,7 +18,7 @@ const redisClient = redis.createClient({
 //configuracion de la session y las cookies
 app.use(session({
     store: new RedisStore({client: redisClient}),
-    secret: 'password',
+    secret: 'mipassword123',
     saveUninitialized: false, //no guardar si no está inicializada la sesion
     resave: false, //no guardar si no hay cambios
     cookie: { //COOKIE-FLAGS
