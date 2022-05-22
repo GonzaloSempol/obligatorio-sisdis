@@ -11,16 +11,18 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
   
+  #Guarda todos los usuarios ci-hashdelPassword para validar
   db-auth-redis:
-    image: redis
-    #build: './db-auth-redis'
-    ports:
-      - 6379:6379 #solo para testing, lo publica hacia fuera
-  db-sessions-redis:
-    image: redis
-    #build: './db-auth-redis'
+    build: './db-auth-redis'
     ports:
       - 6380:6379 #solo para testing, lo publica hacia fuera
+  
+  #guarda todas las sesiones activas
+  db-sessions-redis:
+    image: redis:7.0.0
+    #build: './db-sessions-redis'
+    ports:
+      - 6379:6379 #solo para testing, lo publica hacia fuera
   #------------------------------------------------------------------------
 
 

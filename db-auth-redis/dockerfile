@@ -1,8 +1,14 @@
-FROM redis:7.0.0-alpine
+FROM redis:7.0.0
 
 EXPOSE 6379
-COPY redis.conf /usr/local/etc/redis/redis.conf
-CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
 
+RUN mkdir -p /usr/local/etc/redis
+WORKDIR /usr/local/etc/redis
 
+COPY redis.conf .
+COPY bulk-database.txt .
+COPY waitAndloadBulk.sh .
+
+#CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+CMD [ "/usr/local/etc/redis/waitAndloadBulk.sh" ]
 
