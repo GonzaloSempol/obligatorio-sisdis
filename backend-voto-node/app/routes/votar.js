@@ -3,7 +3,8 @@ const router = express.Router()
 
 //configuramos las rutas
 
-router.get('/', (req,res) => {
+router.get('/', (req, res) => {
+	console.log('entroo')
 	res.send('Hola! Votar!')
 
 })

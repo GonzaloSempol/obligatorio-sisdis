@@ -4,12 +4,14 @@ const router = express.Router()
 
 //configuramos las rutas
 
-router.post('/login', (req,res) => {
-    
+router.post('/', (req, res) => {
+    console.log('entro');
+
     //chequeamos credenciales
-	//TODO!!!!
-    
-    req.session.cliente = 'CLIENTE!'
+    //TODO!!!!
+
+    // const { email, password } = req
+    // req.session.email = 'testeo'
     res.send('Hola Cliente! estás logueado!')
 
 })
