@@ -6,7 +6,7 @@ services:
   db-votos-mongo:
     image: mongo:4.4.14
     ports:
-      - 27017:27017 #solo para testing
+      - 27017:27017 #solo para testing, lo publica hacia fuera
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -15,7 +15,12 @@ services:
     image: redis
     #build: './db-auth-redis'
     ports:
-      - 6379:6379 #solo para testing
+      - 6379:6379 #solo para testing, lo publica hacia fuera
+  db-sessions-redis:
+    image: redis
+    #build: './db-auth-redis'
+    ports:
+      - 6380:6379 #solo para testing, lo publica hacia fuera
   #------------------------------------------------------------------------
 
 
@@ -29,7 +34,6 @@ services:
       - 8080:8080
     volumes:
        - './backend-voto-node/app:/app'
-
 
   backend-corte-node:
     build: './backend-corte-node/app'
