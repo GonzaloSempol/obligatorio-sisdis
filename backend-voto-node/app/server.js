@@ -5,15 +5,22 @@ const connectRedis = require('connect-redis')
 
 const app = express()
 
+
+
 //conectamos el manejo de las sesiones con redis, 
 //requerido por la libreria express-sessions
 const RedisStore = connectRedis(session) 
 
 //configuramos la conexion con redis seteando puerto y host
 const redisClient = redis.createClient({
-    port: 6379,
-    host: 'db-auth-redis'
+    socket:{
+        host: 'db-auth-redis',
+        port: 6379,
+    },
+    legacyMode: true,
+    
 })
+redisClient.connect().catch(console.error)
 
 //configuracion de la session y las cookies
 app.use(session({
@@ -34,26 +41,31 @@ app.use(session({
 app.use(express.json()) //configuramos que la app reciba jsons
 
 /////////////////////rutas//////////////////////////
-//login - libre para todos
-const loginRouter = require('./routes/login')
-app.use('/login', loginRouter)
 
+app.post('/login', (req, res) => {
+ 
+    req.session.cliente = 'CLIENTE!'
+    res.send('Hola Cliente! estás logueado!')
+    
+})
 
 //Chequeamos si está logueado en toda la app
 //Las rutas que esten debajo de este bloque requieren estar logueado
 app.use((req, res, next) => {
-    if(!req.session){
-        const error = new Error('Acceso Denegado')
-        error.statusCode = 401
-        next(error)
+    if(!req.session || !req.session.cliente){
+        const err = new Error('Acceso Denegado')
+        err.statusCode = 401
+        next(err)
     }
     next()
 
 })
 
-//votar - requiere estar logueado
-const votarRouter = require('./routes/votar')
-app.use('/votar', votarRouter)
+app.get('/votar', (req, res) => {
+    res.send('Hola! Votar!') 
+})
+
+
 
 //creamos el server
 app.listen(8080, () => console.log('node - backend votos - Server started'))
