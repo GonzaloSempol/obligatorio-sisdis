@@ -9,5 +9,7 @@ const redisSessionsClient = redis.createClient({
     legacyMode: true,
     
 })
+//hacemos la conexion a la base
+redisSessionsClient.connect().catch(console.error)
 
 module.exports = redisSessionsClient

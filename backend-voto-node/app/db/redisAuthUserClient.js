@@ -9,5 +9,6 @@ const redisAuthClient = redis.createClient({
     legacyMode: true,
     
 })
-
+//hacemos la conexion a la base para auth
+redisAuthClient.connect().catch(console.error)
 module.exports = redisAuthClient
