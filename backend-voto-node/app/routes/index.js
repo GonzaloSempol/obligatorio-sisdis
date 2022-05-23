@@ -15,4 +15,7 @@ router.use(autenticar)
 
 router.get('/votar', votarController)
 
+
+
+
 module.exports = router

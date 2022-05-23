@@ -10,4 +10,7 @@ const redisAuthClient = redis.createClient({
     
 })
 
+//hacemos la conexion a la base
+redisAuthClient.connect().catch(console.error)
+
 module.exports = redisAuthClient

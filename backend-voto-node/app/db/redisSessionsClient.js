@@ -10,4 +10,8 @@ const redisSessionsClient = redis.createClient({
     
 })
 
+
+//hacemos la conexion a la base
+redisSessionsClient.connect().catch(console.error)
+
 module.exports = redisSessionsClient
