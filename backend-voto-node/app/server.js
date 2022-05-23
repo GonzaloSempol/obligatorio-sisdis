@@ -2,8 +2,6 @@ const express = require ('express')
 const session = require('./middleware/session')
 const router = require('./routes')
 
-
-
 const app = express()
 
 
@@ -18,9 +16,6 @@ app.use(session)
 
 /////////////////////rutas//////////////////////////
 app.use(router)
-
-
-
 
 //creamos el server
 app.listen(8080, () => console.log('node - backend votos - Server started'))
