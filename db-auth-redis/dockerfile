@@ -3,12 +3,16 @@ FROM redis:7.0.0
 EXPOSE 6379
 
 RUN mkdir -p /usr/local/etc/redis
-WORKDIR /usr/local/etc/redis
+WORKDIR /usr/local/etc/redis/
 
-COPY redis.conf .
-COPY bulk-database.txt .
-COPY loadBulkAndStartRedis.sh .
-COPY loadBulk.sh .
+COPY . .
+RUN cat loadBulkAndStartRedis-.sh | tr -d '\r' >> loadBulkAndStartRedis.sh; \ 
+    cat loadBulk-.sh | tr -d '\r' >> loadBulk.sh; \
+    rm loadBulkAndStartRedis-.sh; \
+    rm loadBulk-.sh; \
+    chmod +x loadBulk.sh; \
+    chmod +x loadBulkAndStartRedis.sh;
+
 
 #CMD [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
 CMD [ "/usr/local/etc/redis/loadBulkAndStartRedis.sh" ]
