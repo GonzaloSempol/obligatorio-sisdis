@@ -1,19 +1,25 @@
 const redisAuthClient = require('../db/redisAuthUserClient')
 
-async function login(req,res, next){
-
-    try{
-        const response = await redisAuthClient.get('1000001')
-        
-        req.session.cliente = 'CLIENTE'
-        req.session.resp = response
-        res.send('Hola Cliente! estás logueado!')
+function login(req,res){
+   
     
-    }catch(err){
-        console.error("error al hacer consulta auth")
-    }
+   
+    redisAuthClient.GET(req.body.usuario, (err,response) => {
+        if(err) console.log(err.message)
+        if(req.body.password == response ){
+            req.session.usuario = req.body.usuario 
+            res.send('Hola Cliente: ' + req.body.usuario + ' estás logueado!')
+            
+        }else{
+            res.send('Usuario o contraseña incorrecta')
+        }
+        
+     })
+
     
 }
+
+
 
 
 

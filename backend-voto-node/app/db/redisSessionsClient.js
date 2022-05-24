@@ -11,7 +11,21 @@ const redisSessionsClient = redis.createClient({
 })
 
 
+redisSessionsClient.on('error', (err) => {
+    console.log(err.message)
+})
+redisSessionsClient.on('connect', () => {
+    console.log("Conectado a db-sessions-redis")
+})
+redisSessionsClient.on('ready', (err) => {
+    console.log("db-sessions-redis listo para usar...")
+})
+redisSessionsClient.on('end', (err) => {
+    console.log("db-sessions-redis desconectado")
+})
 //hacemos la conexion a la base
 redisSessionsClient.connect().catch(console.error)
+
+
 
 module.exports = redisSessionsClient

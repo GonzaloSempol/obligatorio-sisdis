@@ -3,7 +3,7 @@
 //Las rutas que esten debajo de este bloque requieren estar logueado
 
 function authenticate(req, res, next) {
-    if(!req.session || !req.session.cliente){
+    if(!req.session || !req.session.usuario){
         const err = new Error('Acceso Denegado')
         err.statusCode = 401
         next(err)

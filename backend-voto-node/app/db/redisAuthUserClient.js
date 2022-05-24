@@ -10,6 +10,18 @@ const redisAuthClient = redis.createClient({
     
 })
 
+redisAuthClient.on('error', (err) => {
+    console.log(err.message)
+})
+redisAuthClient.on('connect', () => {
+    console.log("Conectado a db-auth-redis")
+})
+redisAuthClient.on('ready', (err) => {
+    console.log("db-auth-redis listo para usar...")
+})
+redisAuthClient.on('end', (err) => {
+    console.log("db-auth-redis desconectado")
+})
 //hacemos la conexion a la base
 redisAuthClient.connect().catch(console.error)
 
