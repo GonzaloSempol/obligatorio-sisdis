@@ -8,7 +8,6 @@ const redisSessionsClient = require('../db/redisSessions/redisSessionsClient')
 const RedisStore = connectRedis(session) 
 
 module.exports = session({
-    
     name: 'sessionCookieVoto',
     store: new RedisStore({client: redisSessionsClient}),
     secret: '78b31c2f705d051930bc67198c290c9b1eb92f1379d2a932bcaa85c258d64d77',
