@@ -1,13 +1,21 @@
 const express = require ('express')
+const session = require('./middleware/session')
+const router = require('./routes')
+
 const app = express()
 
-app.use(express.json()) //configuramos que reciba jsons
 
-//rutas
+//configuramos que la app reciba jsons
+app.use(express.json()) 
 
-//votar
-const leerVotosRouter = require('./routes/leerVotos')
-app.use('/leerVotos', leerVotosRouter)
+//configuracion de la session y las cookies
+app.use(session)
 
+//para que funcione estando detrás de nginx
+//app.set('trust proxy', 1); 
 
-app.listen(8081, () => console.log('node - backend corte - Server started'))
+/////////////////////rutas//////////////////////////
+app.use(router)
+
+//creamos el server
+app.listen(8080, () => console.log('node - backend votos - Server started'))

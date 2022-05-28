@@ -3,4 +3,5 @@ SET 1000002 'contrasenia2'
 SET 1000003 'contrasenia3'
 SET 1000004 'contrasenia4'
 SET 1000005 'contrasenia5'
+SET CorteElectoral 'CorteElectoral'
 
