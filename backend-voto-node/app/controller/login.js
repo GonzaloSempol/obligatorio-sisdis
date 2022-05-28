@@ -1,14 +1,15 @@
-const redisAuthClient = require('../db/redisAuthUserClient')
+const redisAuthClient = require('../db/redisAuth/redisAuthUserClient')
 
 
 function login (req,res) {
-    const {body: {usuario, password}} = req;
+    const {body: {ci, password}} = req;
 
+    //Version para probar si se puede sacar el legacyMode en el cliente redis
     // try {
-    //     const response = await redisAuthClient.get(usuario);
+    //     const response = await redisAuthClient.get(ci);
     //     if (password === response) {
-    //         req.session.usuario = usuario;
-    //         res.send(`Hola cliente ${usuario} estas logueado!`);
+    //         req.session.ci = ci;
+    //         res.send(`Hola cliente ${ci} estas logueado!`);
     //     }else {
     //         res.status(401)
     //     }
@@ -17,15 +18,15 @@ function login (req,res) {
     // }
 
     
-     redisAuthClient.GET(usuario, (err,response) => {
+     redisAuthClient.GET(ci, (err,response) => {
          if(err) console.log(err.message)
          if(password == response ){
-             req.session.usuario = usuario
+             req.session.ci = ci
              res.send(req.session) 
-             //res.send('Hola Cliente: ' + usuario + ' estás logueado!')
+             //res.send('Hola Cliente: ' + ci + ' estás logueado!')
             
          }else{
-             res.send('Usuario o contraseña incorrecta')
+             res.send('ci o contraseña incorrecta')
          }
         
       })

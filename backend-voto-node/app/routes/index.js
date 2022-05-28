@@ -13,7 +13,7 @@ router.post('/login', loginController)
 router.use(autenticar) 
 
 
-router.get('/votar', votarController)
+router.post('/votar', votarController)
 
 
 

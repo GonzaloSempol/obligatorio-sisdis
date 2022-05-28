@@ -11,7 +11,7 @@ const redisAuthClient = redis.createClient({
 })
 
 redisAuthClient.on('error', (err) => {
-    console.log(err.message)
+    console.log("error en db-auth-redis:" + err.message)
 })
 redisAuthClient.on('connect', () => {
     console.log("Conectado a db-auth-redis")
