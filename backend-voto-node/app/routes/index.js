@@ -1,8 +1,7 @@
 const express = require('express');
 
 const apiRouter = express.Router();
-// const { authenticate, session } = require('../middleware');
-const { session } = require('../middleware');
+const { authenticate, session } = require('../middleware');
 const loginRouter = require('./login');
 const voteRouter = require('./vote');
 
@@ -13,8 +12,7 @@ const makeAuthRouter = () => {
   const router = express.Router();
 
   routes.forEach(([path, nestedRouter]) => {
-    // router.use(path, session, authenticate(), nestedRouter);
-    router.use(path, session, nestedRouter);
+    router.use(path, session, authenticate, nestedRouter);
   });
 
   return router;

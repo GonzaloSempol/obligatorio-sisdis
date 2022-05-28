@@ -1,12 +1,16 @@
 const session = require('express-session');
 const connectRedis = require('connect-redis');
 const redisSessionsClient = require('../db/redisSessionsClient');
+const { timeToMs } = require('../helper');
 
+const maxAge = timeToMs({ minutes: 5 });
 // express-session require un store,
 // para eso usamos la libreria connect-redis
 
 const RedisStore = connectRedis(session);
 
+// hacemos la conexion a la base
+// redisSessionsClient.connect().catch(console.error);
 module.exports = session({
 
   name: 'sessionCookie',
@@ -17,9 +21,6 @@ module.exports = session({
   cookie: { // COOKIE-FLAGS
     secure: false, // solo responder por https si va en true, HAY QUE HABILITARLO LUEGO
     httpOnly: true, // prevenir XSS, que javascript no lea las cookies
-    maxAge: 1000 * 60 * 5, // tiempo de las sesiones 5 min
+    maxAge, // tiempo de las sesiones 5 min
   },
 });
-
-// hacemos la conexion a la base
-redisSessionsClient.connect().catch(console.error);

@@ -6,7 +6,6 @@ const redisSessionsClient = redis.createClient({
     host: 'db-sessions-redis',
     port: 6379,
   },
-  legacyMode: true,
 
 });
 
@@ -23,6 +22,6 @@ redisSessionsClient.on('end', () => {
   console.log('db-sessions-redis desconectado');
 });
 // hacemos la conexion a la base
-redisSessionsClient.connect().catch(console.error);
+// redisSessionsClient.connect().catch(console.error);
 
 module.exports = redisSessionsClient;
