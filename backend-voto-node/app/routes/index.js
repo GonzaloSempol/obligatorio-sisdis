@@ -1,21 +1,39 @@
-const express = require('express')
-const router = express.Router();
-const autenticar = require('../middleware/authenticate')
-const loginController = require('../controller/login')
-const votarController = require('../controller/votar')
+const express = require('express');
 
+const apiRouter = express.Router();
+const { authenticate, session } = require('../middleware');
+const loginRouter = require('./login');
+const voteRouter = require('./vote');
 
+const makeAuthRouter = () => {
+  const routes = [
+    ['/vote', voteRouter],
+  ];
+  const router = express.Router();
 
-router.post('/login', loginController)
+  routes.forEach(([path, nestedRouter]) => {
+    router.use(path, session, authenticate, nestedRouter);
+  });
 
-//las rutas debajo de esta están protegidas
-//Solo pueden ser accedidas por usuarios logueados.
-router.use(autenticar) 
+  return router;
+};
+const makeBasicRouter = () => {
+  const routes = [
+    ['/login', loginRouter],
+  ];
+  const router = express.Router();
 
+  routes.forEach(([path, nestedRouter]) => {
+    router.use(path, session, nestedRouter);
+  });
 
-router.get('/votar', votarController)
+  return router;
+};
 
+apiRouter.use(makeBasicRouter());
+apiRouter.use(makeAuthRouter());
+apiRouter.get('/ping', (req, res) => res.send('pong'));
+// las rutas debajo de esta están protegidas
+// Solo pueden ser accedidas por usuarios logueados.
 
-
-
-module.exports = router
+module.exports = apiRouter;
