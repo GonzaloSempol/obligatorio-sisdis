@@ -1,25 +1,21 @@
-const redisAuthClient = require('../db/redisAuth/redisAuthUserClient')
+
+const {ADMIN_USER, ADMIN_PASS} = require('../config');
 
 
 function login (req,res) {
     const {body: {usuario, password}} = req;
 
-
-     redisAuthClient.GET(usuario, (err,response) => {
-         if(err) console.log(err.message)
-         if(password == response ){
-             req.session.usuario = usuario
-             res.send(req.session) 
-             
-            
+    if(usuario===ADMIN_USER && password ===ADMIN_PASS){
+        req.session.usuario = usuario
+        res.send(req.session) 
          }else{
              res.send('user o contraseña incorrecta')
          }
         
-      })
+      }
 
     
-}
+
 
 
 

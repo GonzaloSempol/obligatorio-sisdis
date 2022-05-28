@@ -1,3 +1,6 @@
+require("dotenv").config()
+
+
 const express = require ('express')
 const session = require('./middleware/session')
 const router = require('./routes')
