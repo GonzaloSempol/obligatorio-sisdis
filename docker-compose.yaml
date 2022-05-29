@@ -50,17 +50,4 @@ services:
   #------------------------------------------------------------------------
 
 
-  #OPCIONALES--------------------------------------------------------------
-  #gestor de mongodb - para testing
-  mongo-express:
-    image: mongo-express
-    ports:
-      - 8082:8081 #solo para testing
-    depends_on:
-      - db-votos-mongo
-    environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: root
-      ME_CONFIG_MONGODB_URL: mongodb://root:root@db-votos-mongo:27017/
-  #------------------------------------------------------------------------
 

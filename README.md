@@ -1,6 +1,6 @@
 # obligatorio-sisdis
 
-## **Estructura base dockerizada con 5 servicios y 3 endpoints**
+## **Estructura base dockerizada con 5 servicios y 4 endpoints**
 
   - **db-votos-mongo**  
   - **db-auth-redis**
@@ -17,10 +17,10 @@ Utilizar postman e importar el archivo:
 **obligatorio-sisdis/POSTMAN REQUESTS**
 
 ### Usuarios válidos:
-1000000 - contrasenia0
-1000001 - contrasenia1
-...
-1000049 - contrasenia49
+1000000 - contrasenia0  
+1000001 - contrasenia1  
+...  
+1000049 - contrasenia49  
 ### Credenciales Corte:
 CorteElectoral - CorteElectoral
 
