@@ -1,6 +1,6 @@
 # obligatorio-sisdis
 
-## **Estructura base dockerizada con 5 servicios y 3 endpoints** 
+## **Estructura base dockerizada con 5 servicios y 3 endpoints**
 
   - **db-votos-mongo**  
   - **db-auth-redis**
@@ -9,7 +9,21 @@
        - http://localhost:8080/login   
        - http://localhost:8080/votar 
   - **backend-corte-node**: 
-    - http://localhost:8081/leerVotos
+    - http://localhost:8081/login
+    - http://localhost:8081/getVotos
+
+### Para consumir los endpoints 
+Utilizar postman e importar el archivo:
+**obligatorio-sisdis/POSTMAN REQUESTS**
+
+### Usuarios válidos:
+1000000 - contrasenia0
+1000001 - contrasenia1
+...
+1000049 - contrasenia49
+### Credenciales Corte:
+CorteElectoral - CorteElectoral
+
 
 
 ## Para correr por 1era vez✨
@@ -27,5 +41,10 @@ Esto levanta todos los servicios y monta las carpetas en los contenedores,
 de esta manera los cambios hechos se refrescan automaticamente.  
 
 Para correr por segunda vez ya no es necesario instalar dependencias.  
+
+
+
+
+
 
 
