@@ -30,10 +30,10 @@ async function votar(req,res, next){
             
             res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`) 
         }else{
-            res.send(`Error: ${req.session.ci} Ya ha votado`) 
+            res.status(409).send(`Error: ${req.session.ci} Ya ha votado`) 
         }
     }else{
-        res.send(`Error: Partido Departamento o Circuito invalido`) 
+        res.status(409).send(`Error: Partido Departamento o Circuito invalido`) 
     }
      
     

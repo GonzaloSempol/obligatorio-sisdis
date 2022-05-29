@@ -6,10 +6,8 @@ function authenticate(req, res, next) {
 
 
     if(!req.session.ci){
-        const err = new Error('Acceso Denegado')
-        err.statusCode = 401
-        next(err)
-    }
+        res.status(401).send('Acceso Denegado')
+     }
     next()
 }
 
