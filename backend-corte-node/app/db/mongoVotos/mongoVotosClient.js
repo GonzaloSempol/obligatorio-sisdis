@@ -2,11 +2,11 @@ const mongoVotosClient = require("mongoose")
 
 
 //Sacar claves hardcodeadas
-mongoVotosClient.connect("mongodb://root:root@db-votos-mongo:27017",{"dbName":"votos"}).catch(error => console.log("Error conectando a db-votos-mongo!!!"))
+mongoVotosClient.connect("mongodb://root:root@db-votos-mongo:27017", { "dbName": "votos" }).catch(error => console.log("Error conectando a db-votos-mongo!!!"))
 
 
 mongoVotosClient.connection.on('error', err => {
-    console.log("Error en conexion db-votos-mongo:"+ err);
+    console.log("Error en conexion db-votos-mongo:" + err);
 })
 mongoVotosClient.connection.on('connected', () => {
     console.log("Conectado a db-votos-mongo")

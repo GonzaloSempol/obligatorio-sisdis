@@ -1,10 +1,10 @@
-const mongoose = require ("mongoose")
+const mongoose = require("mongoose")
 
 
 const haVotadoSchema = new mongoose.Schema({
     _id: { //La ci es el id para asegurar que no habrá id duplicados.
         type: Number,
-        required:true
+        required: true
     },
     departamento: {
         type: String,
@@ -14,7 +14,7 @@ const haVotadoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    
+
 })
 
 module.exports = mongoose.model("haVotado", haVotadoSchema)

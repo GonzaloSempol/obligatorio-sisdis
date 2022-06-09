@@ -5,7 +5,7 @@ const redisSessionsClient = require('../db/redisSessions/redisSessionsClient')
 function authenticate(req, res, next) {
 
 
-    if(!req.session.usuario){
+    if (!req.session.usuario) {
         res.status(401).send('Acceso Denegado')
     }
     next()

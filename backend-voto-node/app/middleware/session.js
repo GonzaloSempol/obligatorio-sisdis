@@ -5,11 +5,11 @@ const redisSessionsClient = require('../db/redisSessions/redisSessionsClient')
 //express-session require un store, 
 //para eso usamos la libreria connect-redis 
 
-const RedisStore = connectRedis(session) 
+const RedisStore = connectRedis(session)
 
 module.exports = session({
     name: 'sessionCookieVoto',
-    store: new RedisStore({client: redisSessionsClient}),
+    store: new RedisStore({ client: redisSessionsClient }),
     secret: '78b31c2f705d051930bc67198c290c9b1eb92f1379d2a932bcaa85c258d64d77',
     saveUninitialized: false, //no guardar si no está inicializada la sesion
     resave: false, //no guardar si no hay cambios

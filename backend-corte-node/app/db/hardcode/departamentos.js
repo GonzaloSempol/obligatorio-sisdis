@@ -1,3 +1,3 @@
-const departamentos = ["Montevideo","Canelones","Rocha"]
+const departamentos = ["Montevideo", "Canelones", "Rocha"]
 
 module.exports = departamentos

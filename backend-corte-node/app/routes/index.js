@@ -10,7 +10,7 @@ router.post('/login', loginController)
 
 //las rutas debajo de esta están protegidas
 //Solo pueden ser accedidas por usuarios logueados.
-router.use(autenticar) 
+router.use(autenticar)
 
 
 router.get('/getVotos', getVotosController)

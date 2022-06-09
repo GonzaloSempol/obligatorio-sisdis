@@ -1,10 +1,10 @@
-const mongoose = require ("mongoose")
+const mongoose = require("mongoose")
 
 const votosSchema = new mongoose.Schema({
     //_id será autoincremental
     partido: {
-        type:String,
-        required:true
+        type: String,
+        required: true
     },
     departamento: {
         type: String,

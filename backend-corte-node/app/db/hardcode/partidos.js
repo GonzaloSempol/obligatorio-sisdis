@@ -1,3 +1,3 @@
-const partidos = ["Partido Nacional","Frente Amplio","Partido Colorado"]
+const partidos = ["Partido Nacional", "Frente Amplio", "Partido Colorado"]
 
 module.exports = partidos
