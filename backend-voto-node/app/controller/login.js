@@ -13,15 +13,15 @@ function login(req, res) {
 
                 if (result) {
                     req.session.ci = ci
-                    res.send("Logueado con exito")
+                    return res.send("Logueado con exito")
                 } else {
-                    res.status(401).send('user o contraseña incorrecta')
+                    return res.status(401).send('user o contraseña incorrecta')
                 }
             });
         }
 
         else {
-            res.status(401).send('user o contraseña incorrecta')
+            return res.status(401).send('user o contraseña incorrecta')
         }
 
     })

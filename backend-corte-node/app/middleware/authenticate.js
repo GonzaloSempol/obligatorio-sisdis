@@ -6,7 +6,7 @@ function authenticate(req, res, next) {
 
 
     if (!req.session.usuario) {
-        res.status(401).send('Acceso Denegado')
+        return res.status(401).send('Acceso Denegado')
     }
     next()
 }

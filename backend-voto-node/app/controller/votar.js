@@ -28,12 +28,12 @@ async function votar(req, res, next) {
                 .then(() => session.endSession())
                 .catch((err) => { console.log(err) })
 
-            res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
+            return res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
         } else {
-            res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
+           return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
         }
     } else {
-        res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
+        return res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
     }
 
 
