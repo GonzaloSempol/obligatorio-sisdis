@@ -8,6 +8,7 @@
   - **backend-voto-node:** 
        - http://localhost:8080/login   
        - http://localhost:8080/votar 
+       - http://localhost:8080/partidos 
   - **backend-corte-node**: 
     - http://localhost:8081/login
     - http://localhost:8081/votos
