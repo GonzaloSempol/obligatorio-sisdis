@@ -120,6 +120,25 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "voto-partidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/partidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"partidos"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -155,19 +174,19 @@
 					"response": []
 				},
 				{
-					"name": "corte-getVotos",
+					"name": "corte-votos",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8081/getVotos",
+							"raw": "http://localhost:8081/votos",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "8081",
 							"path": [
-								"getVotos"
+								"votos"
 							]
 						}
 					},

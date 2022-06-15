@@ -10,7 +10,7 @@
        - http://localhost:8080/votar 
   - **backend-corte-node**: 
     - http://localhost:8081/login
-    - http://localhost:8081/getVotos
+    - http://localhost:8081/votos
 
 ### Para consumir los endpoints 
 Utilizar postman e importar el archivo:

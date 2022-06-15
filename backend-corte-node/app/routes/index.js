@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router();
 const autenticar = require('../middleware/authenticate')
 const loginController = require('../controller/login')
-const getVotosController = require('../controller/getVotos')
+const votosController = require('../controller/votos')
 
 
 
@@ -13,7 +13,7 @@ router.post('/login', loginController)
 router.use(autenticar)
 
 
-router.get('/getVotos', getVotosController)
+router.get('/votos', votosController)
 
 
 
