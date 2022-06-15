@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Votos",
+			"name": "Votos-nodo-1",
 			"item": [
 				{
 					"name": "voto-login",
@@ -133,6 +133,278 @@
 								"localhost"
 							],
 							"port": "8080",
+							"path": [
+								"partidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votos-nodo-2",
+			"item": [
+				{
+					"name": "voto-login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ci\": 1000001,\r\n    \"password\": \"contrasenia1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Frente Amplio)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Frente Amplio\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Partido Nacional)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Partido Nacional\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Partido Colorado)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Partido Colorado\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8090/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-partidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8090/partidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8090",
+							"path": [
+								"partidos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Votos-loadBalancer-nginx",
+			"item": [
+				{
+					"name": "voto-login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"ci\": 1000001,\r\n    \"password\": \"contrasenia1\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:80/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Frente Amplio)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Frente Amplio\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:80/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Partido Nacional)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Partido Nacional\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:80/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-votar (Partido Colorado)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"partido\":\"Partido Colorado\",\r\n    \"departamento\":\"Montevideo\",\r\n    \"circuito\":\"A1001\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:80/votar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
+							"path": [
+								"votar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "voto-partidos",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:80/partidos",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "80",
 							"path": [
 								"partidos"
 							]
