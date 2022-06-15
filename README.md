@@ -1,14 +1,22 @@
 # obligatorio-sisdis
 
 ## **Estructura base dockerizada con 5 servicios y 4 endpoints**
-
+  
   - **db-votos-mongo**  
   - **db-auth-redis**
   - **db-sessions-redis**
-  - **backend-voto-node:** 
+  - **loadbalancer-ningx**
+       - http://localhost:80/login   
+       - http://localhost:80/votar 
+       - http://localhost:80/partidos
+  - **backend-voto-node-1:** 
        - http://localhost:8080/login   
        - http://localhost:8080/votar 
        - http://localhost:8080/partidos 
+  - **backend-voto-node-2:** 
+       - http://localhost:8090/login   
+       - http://localhost:8090/votar 
+       - http://localhost:8090/partidos 
   - **backend-corte-node**: 
     - http://localhost:8081/login
     - http://localhost:8081/votos

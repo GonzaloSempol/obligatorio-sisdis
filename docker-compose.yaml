@@ -24,18 +24,38 @@ services:
     ports:
       - 6379:6379 #solo para testing, lo publica hacia fuera
   #------------------------------------------------------------------------
-
-
+  
+  #LOAD BALANCER-----------------------------------------------------------
+  loadbalancer-nginx:
+    build: ./loadbalancer-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-voto-node-1
+      - backend-voto-node-2
+    command: sh -c "/wait && nginx -g 'daemon off;'"
+    environment:
+      - WAIT_HOSTS=backend-voto-node-1:8080,backend-voto-node-2:8080
+  #------------------------------------------------------------------------
   #BACKENDS----------------------------------------------------------------
-  backend-voto-node:
-    build: './backend-voto-node/app'
+  backend-voto-node-1:
+    build: './backend-voto-node-1/app'
     depends_on:
       - db-votos-mongo
       - db-auth-redis
     ports: 
       - 8080:8080
     volumes:
-       - './backend-voto-node/app:/app'
+       - './backend-voto-node-1/app:/app'
+  backend-voto-node-2:
+    build: './backend-voto-node-2/app'
+    depends_on:
+      - db-votos-mongo
+      - db-auth-redis
+    ports: 
+      - 8090:8080
+    volumes:
+       - './backend-voto-node-2/app:/app'
 
   backend-corte-node:
     build: './backend-corte-node/app'
