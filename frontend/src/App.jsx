@@ -9,7 +9,7 @@ const App = () => {
   // setPage('login');
 
   if (page === 'vote') {
-    return <Vote onSuccess={() => setPage('logout')} />
+    return <Vote onSuccess={() => setPage('logout')} onExit={() => setPage('login')} />
   }
   if (page === 'logout') {
     return <Logout onSuccess={() => setPage('login')} />

@@ -2,27 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { httpClient } from './httpClient';
 import Button from './Button';
 
-const submit = async ({ data, onSuccess }) => {
+const submit = async ({ data, onSuccess, onExit }) => {
+  const { partido } = data;
+  if (!partido) {
+    return window.alert("Selecciona partido")
+  }
   try {
-    const { partido } = data;
-    if (partido) {
-      const { status } = await httpClient.post(
-        '/votar',
-        { ...data },
-      );
-      if (status === 200)
-        onSuccess();
-    }
-    else {
-      console.log('Selecciona partido');
-    }
-  } catch (error) {
-    console.log('error');
-    console.log(error);
+    return await httpClient.post('/votar', { ...data }) && onSuccess();
+  } catch ({ response: { status, data } }) {
+    const mensaje = status === 409 ? data : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
+    window.alert(mensaje)
+    onExit()
   }
 }
 
-const Vote = ({ onSuccess }) => {
+const Vote = ({ onSuccess, onExit }) => {
   const [partidos, setPartidos] = useState([]);
   const [voto, setVoto] = useState(null);
 
@@ -59,13 +53,17 @@ const Vote = ({ onSuccess }) => {
       })}
       <Button
         onClick={() => submit({
-          onSuccess, data: {
+          onSuccess, onExit, data: {
             partido: voto,
             departamento: "Montevideo",
             circuito: "A1001"
           }
         })}
         label="Votar"
+      />
+      <Button
+        onClick={onExit}
+        label="Salir"
       />
     </>
   )

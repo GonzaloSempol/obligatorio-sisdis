@@ -16,7 +16,7 @@ module.exports = session({
     cookie: { //COOKIE-FLAGS
         secure: false,//solo responder por https si va en true, HAY QUE HABILITARLO LUEGO
         httpOnly: true, //prevenir XSS, que javascript no lea las cookies
-        maxAge: 1000 * 60 * 5 //tiempo de las sesiones 5 min
+        maxAge: 1000 * 60 //tiempo de las sesiones 1 min
     }
 })
 

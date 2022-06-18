@@ -2,23 +2,33 @@ import React, { useState } from 'react';
 import { httpClient } from './httpClient';
 import Button from './Button';
 
-const submit = async ({ data, onSuccess }) => {
-  try {
-    const { status } = await httpClient.post(
-      '/login',
-      { ...data },
-    );
-    if (status === 200)
-      onSuccess();
-  } catch (error) {
-    console.log('error');
-    console.log(error);
+const submit = async ({ data, onSuccess, onError }) => {
+  const { ci, password } = data;
+  if (!ci || !password) {
+    return window.alert("Complete todos los campos")
   }
+  try {
+    return await httpClient.post('/login', { ...data }) && onSuccess();
+  } catch ({ response: { status, data } }) {
+    if (status === 401) {
+      onError()
+      window.alert(data)
+    }
+    else {
+      window.alert(`Ha ocurrido un error de status ${status}, por favor intente mas tarde`)
+    }
+  }
+
 }
 
 const Login = ({ onSuccess }) => {
   const [ci, setCi] = useState('1000002');
   const [password, setPassword] = useState('contrasenia2');
+
+  const onError = () => {
+    setCi('');
+    setPassword('');
+  }
 
   return (
     <div>
@@ -30,7 +40,7 @@ const Login = ({ onSuccess }) => {
       <br />
       <input type="password" id="pass" value={password} onChange={e => setPassword(e.target.value)} />
       <br />
-      <Button onClick={() => submit({ onSuccess, data: { ci, password } })} label="Login" />
+      <Button onClick={() => submit({ onSuccess, data: { ci, password }, onError })} label="Login" />
     </div>
   );
 }
