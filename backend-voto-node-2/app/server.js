@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('./middleware/session')
 const router = require('./routes')
+const cors = require('cors')
 
 
 const app = express()
@@ -8,6 +9,8 @@ const app = express()
 
 //configuramos que la app reciba jsons
 app.use(express.json())
+app.use(express.urlencoded())
+app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 
 //configuracion de la session y las cookies
 app.use(session)
