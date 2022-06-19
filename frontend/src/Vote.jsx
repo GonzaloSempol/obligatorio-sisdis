@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { httpClient } from './httpClient';
-import Button from './Button';
+import CustomButton from './CustomButton';
+import { Spacer, RadioGroup, Stack, Radio, Center, Flex } from '@chakra-ui/react'
 
 const submit = async ({ data, onSuccess, onExit }) => {
   const { partido } = data;
@@ -35,37 +36,43 @@ const Vote = ({ onSuccess, onExit }) => {
   }, []);
 
   return (
-    <>
-      {partidos.map((partido) => {
-        return (
-          <>
-            <input
-              type="radio"
-              value={partido}
-              name="vote-selection"
-              checked={voto === partido}
-              onChange={e => setVoto(e.target.value)}
-            />
-            {partido}
-            <br />
-          </>
-        )
-      })}
-      <Button
-        onClick={() => submit({
-          onSuccess, onExit, data: {
-            partido: voto,
-            departamento: "Montevideo",
-            circuito: "A1001"
-          }
-        })}
-        label="Votar"
-      />
-      <Button
-        onClick={onExit}
-        label="Salir"
-      />
-    </>
+    <Center w="100%" h="100vh">
+      <Flex direction="column" w="20%">
+      
+        <RadioGroup onChange={setVoto} value={voto}>
+          <Stack direction='column'>
+
+            {partidos.map((partido) => {
+              return (
+                <>
+                  <Radio value={partido}>{partido}</Radio>
+                  <br />
+                </>
+              )
+            })}
+
+          </Stack>
+          </RadioGroup>
+        <Flex>
+            <CustomButton
+            onClick={() => submit({
+              onSuccess, onExit, data: {
+                partido: voto,
+                departamento: "Montevideo",
+                circuito: "A1001"
+              }
+            })}
+            label="Votar"
+          />
+          <Spacer/>
+          <CustomButton
+            onClick={onExit}
+            label="Salir"
+          /> 
+        </Flex>
+      
+      </Flex>
+    </Center>
   )
 
 }
