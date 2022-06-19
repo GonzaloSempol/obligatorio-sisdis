@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
-import { Spacer, RadioGroup, Stack, Radio, Center, Flex } from '@chakra-ui/react'
+import { Spacer, RadioGroup, Stack, Radio, Center, Flex, useToast } from '@chakra-ui/react'
 
-const submit = async ({ data, onSuccess, onExit }) => {
+const submit = async ({ data, onSuccess, onExit, toastError }) => {
+
   const { partido } = data;
   if (!partido) {
-    return window.alert("Selecciona partido")
+    return toastError({
+      description: "Selecciona un partido"
+    })
   }
   try {
     return await httpClient.post('/votar', { ...data }) && onSuccess();
   } catch ({ response: { status, data } }) {
     const mensaje = status === 409 ? data : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
-    window.alert(mensaje)
-    onExit()
+    toastError({
+      title: "Error",
+      description: mensaje,
+    })
+    onExit();
   }
 }
 
@@ -21,6 +27,14 @@ const Vote = ({ onSuccess, onExit }) => {
   const [partidos, setPartidos] = useState([]);
   const [voto, setVoto] = useState(null);
 
+  const toast = useToast({
+    position: 'top',
+    status: 'error',
+    duration: 5000,
+    isClosable: true,
+  });
+
+  const toastError = ({ title, description }) => toast({ title, description })
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,7 +42,6 @@ const Vote = ({ onSuccess, onExit }) => {
         const { data } = await httpClient.get('/partidos');
         setPartidos(data);
       } catch (error) {
-        console.log('error');
         console.log(error);
       }
     }
@@ -38,7 +51,7 @@ const Vote = ({ onSuccess, onExit }) => {
   return (
     <Center w="100%" h="100vh">
       <Flex direction="column" w="20%">
-      
+
         <RadioGroup onChange={setVoto} value={voto}>
           <Stack direction='column'>
 
@@ -52,11 +65,11 @@ const Vote = ({ onSuccess, onExit }) => {
             })}
 
           </Stack>
-          </RadioGroup>
+        </RadioGroup>
         <Flex>
-            <CustomButton
+          <CustomButton
             onClick={() => submit({
-              onSuccess, onExit, data: {
+              onSuccess, onExit, toastError, data: {
                 partido: voto,
                 departamento: "Montevideo",
                 circuito: "A1001"
@@ -64,13 +77,13 @@ const Vote = ({ onSuccess, onExit }) => {
             })}
             label="Votar"
           />
-          <Spacer/>
+          <Spacer />
           <CustomButton
             onClick={onExit}
             label="Salir"
-          /> 
+          />
         </Flex>
-      
+
       </Flex>
     </Center>
   )

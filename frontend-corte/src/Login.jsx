@@ -6,8 +6,8 @@ import { Input, Center, Flex, useToast } from '@chakra-ui/react'
 
 const submit = async ({ data, onSuccess, onError, toastError }) => {
 
-  const { ci, password } = data;
-  if (!ci || !password) {
+  const { usuario, password } = data;
+  if (!usuario || !password) {
     return toastError({
       description: "Complete todos los campos"
     })
@@ -33,8 +33,8 @@ const submit = async ({ data, onSuccess, onError, toastError }) => {
 }
 
 const Login = ({ onSuccess }) => {
-  const [ci, setCi] = useState('1000002');
-  const [password, setPassword] = useState('contrasenia2');
+  const [usuario, setUsuario] = useState('CorteElectoral');
+  const [password, setPassword] = useState('CorteElectoral');
 
   const toast = useToast({
     position: 'top',
@@ -47,7 +47,7 @@ const Login = ({ onSuccess }) => {
 
 
   const onError = () => {
-    setCi('');
+    setUsuario('');
     setPassword('');
   }
 
@@ -55,16 +55,16 @@ const Login = ({ onSuccess }) => {
     <Center w="100%" h="100vh">
       <Flex direction="column" w="20%">
 
-        <label htmlFor="ci">Cedula</label>
+        <label htmlFor="usuario">Usuario</label>
         <br />
-        <Input type="text" id="ci" value={ci} onChange={e => setCi(e.target.value)} />
+        <Input type="text" id="usuario" value={usuario} onChange={e => setUsuario(e.target.value)} />
 
         <br />
         <label htmlFor="pass">Contraseña</label>
         <br />
         <Input type="password" id="pass" value={password} onChange={e => setPassword(e.target.value)} />
         <br />
-        <CustomButton onClick={() => submit({ onSuccess, data: { ci, password }, onError, toastError })} label="Login" />
+        <CustomButton onClick={() => submit({ onSuccess, data: { usuario, password }, onError, toastError })} label="Login" />
       </Flex>
     </Center>
   );
