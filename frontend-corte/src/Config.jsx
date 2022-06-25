@@ -41,7 +41,8 @@ const submit = async ({ data, onSuccess, onExit, toastError }) => {
     });
   }
   try {
-    return await httpClient.post('/config', { ...data }) && onSuccess();
+    await httpClient.post('/config', { ...data });
+    return onSuccess();
   } catch ({ response: { status, data: description } }) {
     const mensaje = status === 409 ? description : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
     toastError({
@@ -55,7 +56,7 @@ const submit = async ({ data, onSuccess, onExit, toastError }) => {
 const Config = ({ onSuccess, onExit }) => {
   const now = dayjs().tz('America/Montevideo');
   const [startDate, setStartDate] = useState(now.toDate());
-  const [endDate, setEndDate] = useState(now.add(1, 'hour').toDate());
+  const [endDate, setEndDate] = useState(now.add(5, 'minutes').toDate());
 
   const toast = useToast({
     position: 'top',
@@ -103,6 +104,7 @@ const Config = ({ onSuccess, onExit }) => {
           <CustomButton
             onClick={() => submit({
               onSuccess,
+              onExit,
               toastError,
               data: {
                 startDate,

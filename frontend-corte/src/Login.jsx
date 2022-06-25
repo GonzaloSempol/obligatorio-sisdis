@@ -3,12 +3,9 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Input, Center, Flex, useToast } from '@chakra-ui/react';
+import { parse, format } from 'fecha';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
-import { parse, format } from 'fecha';
-
-
-
 
 const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
   const { usuario, password } = data;
@@ -22,10 +19,8 @@ const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
     // deberia chequearse luego de loguearse no antes, sino hay que hacer /config publico
     //
     const loginResponse = await httpClient.post('/login', { ...data });
-    console.log(loginResponse);
     if (loginResponse.status === 200) {
       const { data: configResponse } = await httpClient.get('/config');
-      console.log(configResponse);
       if (configResponse.habilitadoVerVotos) {
         return onSuccess();
       }
@@ -39,7 +34,7 @@ const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
     if (status === 401) {
       onError();
       if (description.habilitadoVerVotos === false) {
-        const fechaFormat = (parse(description.endDate, 'isoDateTime', 'YYYY-MM-DD hh:mm:ss')); 
+        const fechaFormat = format(parse(description.endDate, 'isoDateTime', 'YYYY-MM-DD hh:mm:ss'));
 
         toastError({
           title: 'Error',
