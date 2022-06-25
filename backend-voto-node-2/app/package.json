@@ -14,6 +14,7 @@
     "cors": "^2.8.5",
     "express": "^4.18.1",
     "express-session": "^1.17.3",
+    "global-time": "^1.5.1",
     "mongoose": "^6.3.3",
     "redis": "^4.1.0"
   },

@@ -5,37 +5,43 @@ const HaVotado = require("../db/mongoVotos/schemas/haVotado")
 const partidos = require("../db/hardcode/partidos")
 const departamentos = require("../db/hardcode/departamentos")
 const circuitos = require("../db/hardcode/circuitos")
-
+const Config = require("../db/mongoVotos/schemas/config")
+const globalTime = require('global-time')
 
 
 async function votar(req, res, next) {
 
-    const { body: { partido, departamento, circuito } } = req;
+    if(await esVotacionEnCurso()){
 
-    const responseHaVotado = await chequearHaVotado(req.session.ci);
+    
+        const { body: { partido, departamento, circuito } } = req;
 
-    let session = null
-    if (esPartidoValido(partido) && esCircuitoValido(circuito) && esDepartamentoValido(departamento)) {
-        if (!responseHaVotado) {
+        const responseHaVotado = await chequearHaVotado(req.session.ci);
 
-            mongoose.startSession().then((_session) => {
-                session = _session
-                _session.withTransaction(() => {
-                    insertarVoto(partido, departamento, circuito)
-                    insertarHaVotado(req.session.ci, departamento, circuito)
-                })
-            }).then(() => session.commitTransaction())
-                .then(() => session.endSession())
-                .catch((err) => { console.log(err) })
+        let session = null
+        if (esPartidoValido(partido) && esCircuitoValido(circuito) && esDepartamentoValido(departamento)) {
+            if (!responseHaVotado) {
 
-            return res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
+                mongoose.startSession().then((_session) => {
+                    session = _session
+                    _session.withTransaction(() => {
+                        insertarVoto(partido, departamento, circuito)
+                        insertarHaVotado(req.session.ci, departamento, circuito)
+                    })
+                }).then(() => session.commitTransaction())
+                    .then(() => session.endSession())
+                    .catch((err) => { console.log(err) })
+
+                return res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
+            } else {
+            return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
+            }
         } else {
-           return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
+            return res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
         }
-    } else {
-        return res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
+    }else{
+        return res.status(409).send(`Error: No hay votación en curso`)
     }
-
 
 
 
@@ -85,6 +91,38 @@ function esCircuitoValido(circuito) {
 
 
 }
+
+
+////
+
+
+async function esVotacionEnCurso() {
+ try{  
+        const time = await globalTime();
+        const currentTime = new Date(time);
+        //chequeamos que estemos en un proceso de votacion en este momento.
+        const dbResponse = await Config.findOne().sort({created_at: -1})
+            
+            
+            if( currentTime >= dbResponse.startDate && currentTime <= dbResponse.endDate ){
+                return true;
+            }
+            return false;
+            
+    } catch(err){
+        console.log("Error" + err.message)
+        return false;
+    }   
+
+
+}
+
+
+
+
+
+
+////
 
 
 
