@@ -41,7 +41,7 @@ const submit = async ({ data, onSuccess, onExit, toastError }) => {
     });
   }
   try {
-    return await httpClient.post('/votar', { ...data }) && onSuccess();
+    return await httpClient.post('/config', { ...data }) && onSuccess();
   } catch ({ response: { status, data: description } }) {
     const mensaje = status === 409 ? description : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
     toastError({

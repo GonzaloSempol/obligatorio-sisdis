@@ -5,7 +5,7 @@ import Results from './Results';
 import Config from './Config';
 
 const App = () => {
-  const [page, setPage] = useState('config');
+  const [page, setPage] = useState('login');
 
   if (page === 'results') {
     return <Results onExit={() => setPage('login')} />;

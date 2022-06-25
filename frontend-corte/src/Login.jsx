@@ -5,6 +5,10 @@ import React, { useState } from 'react';
 import { Input, Center, Flex, useToast } from '@chakra-ui/react';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
+import { parse, format } from 'fecha';
+
+
+
 
 const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
   const { usuario, password } = data;
@@ -13,19 +17,40 @@ const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
       description: 'Complete todos los campos',
     });
   }
+
   try {
-    const { data: response } = await httpClient.get('/config');
-    if (response) {
-      return await httpClient.post('/login', { ...data }) && onSuccess();
+    // deberia chequearse luego de loguearse no antes, sino hay que hacer /config publico
+    //
+    const loginResponse = await httpClient.post('/login', { ...data });
+    console.log(loginResponse);
+    if (loginResponse.status === 200) {
+      const { data: configResponse } = await httpClient.get('/config');
+      console.log(configResponse);
+      if (configResponse.habilitadoVerVotos) {
+        return onSuccess();
+      }
+      if (configResponse.habilitadoConfigurar) {
+        return onSetup();
+      }
     }
-    return onSetup();
+
+    // return
   } catch ({ response: { status, data: description } }) {
     if (status === 401) {
       onError();
-      toastError({
-        title: 'Error',
-        description,
-      });
+      if (description.habilitadoVerVotos === false) {
+        const fechaFormat = (parse(description.endDate, 'isoDateTime', 'YYYY-MM-DD hh:mm:ss')); 
+
+        toastError({
+          title: 'Error',
+          description: (`La votacion finalizará el: ${fechaFormat}`),
+        });
+      } else {
+        toastError({
+          title: 'Error',
+          description,
+        });
+      }
     } else {
       toastError({
         title: 'Error',
