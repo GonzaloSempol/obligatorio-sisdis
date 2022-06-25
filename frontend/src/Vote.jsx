@@ -1,27 +1,28 @@
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
 import React, { useEffect, useState } from 'react';
+import { Spacer, RadioGroup, Stack, Radio, Center, Flex, useToast } from '@chakra-ui/react';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
-import { Spacer, RadioGroup, Stack, Radio, Center, Flex, useToast } from '@chakra-ui/react'
 
 const submit = async ({ data, onSuccess, onExit, toastError }) => {
-
   const { partido } = data;
   if (!partido) {
     return toastError({
-      description: "Selecciona un partido"
-    })
+      description: 'Selecciona un partido',
+    });
   }
   try {
     return await httpClient.post('/votar', { ...data }) && onSuccess();
-  } catch ({ response: { status, data } }) {
-    const mensaje = status === 409 ? data : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
+  } catch ({ response: { status, data: description } }) {
+    const mensaje = status === 409 ? description : `Ha ocurrido un error de status ${status}, por favor intente mas tarde`;
     toastError({
-      title: "Error",
+      title: 'Error',
       description: mensaje,
-    })
+    });
     onExit();
   }
-}
+};
 
 const Vote = ({ onSuccess, onExit }) => {
   const [partidos, setPartidos] = useState([]);
@@ -34,7 +35,7 @@ const Vote = ({ onSuccess, onExit }) => {
     isClosable: true,
   });
 
-  const toastError = ({ title, description }) => toast({ title, description })
+  const toastError = ({ title, description }) => toast({ title, description });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +45,7 @@ const Vote = ({ onSuccess, onExit }) => {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchData().catch(console.error);
   }, []);
 
@@ -53,27 +54,28 @@ const Vote = ({ onSuccess, onExit }) => {
       <Flex direction="column" w="20%">
 
         <RadioGroup onChange={setVoto} value={voto}>
-          <Stack direction='column'>
+          <Stack direction="column">
 
-            {partidos.map((partido) => {
-              return (
-                <>
-                  <Radio value={partido}>{partido}</Radio>
-                  <br />
-                </>
-              )
-            })}
+            {partidos.map(partido => (
+              <>
+                <Radio value={partido}>{partido}</Radio>
+                <br />
+              </>
+            ))}
 
           </Stack>
         </RadioGroup>
         <Flex>
           <CustomButton
             onClick={() => submit({
-              onSuccess, onExit, toastError, data: {
+              onSuccess,
+              onExit,
+              toastError,
+              data: {
                 partido: voto,
-                departamento: "Montevideo",
-                circuito: "A1001"
-              }
+                departamento: 'Montevideo',
+                circuito: 'A1001',
+              },
             })}
             label="Votar"
           />
@@ -86,8 +88,7 @@ const Vote = ({ onSuccess, onExit }) => {
 
       </Flex>
     </Center>
-  )
-
-}
+  );
+};
 
 export default Vote;

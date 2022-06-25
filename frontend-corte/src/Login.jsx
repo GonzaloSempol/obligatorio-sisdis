@@ -1,38 +1,41 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import { Input, Center, Flex, useToast } from '@chakra-ui/react';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
-import { Input, Center, Flex, useToast } from '@chakra-ui/react'
 
-
-const submit = async ({ data, onSuccess, onError, toastError }) => {
-
+const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
   const { usuario, password } = data;
   if (!usuario || !password) {
     return toastError({
-      description: "Complete todos los campos"
-    })
+      description: 'Complete todos los campos',
+    });
   }
   try {
-    return await httpClient.post('/login', { ...data }) && onSuccess();
-  } catch ({ response: { status, data } }) {
-    if (status === 401) {
-      onError()
-      toastError({
-        title: "Error",
-        description: data
-      })
+    const { data: response } = await httpClient.get('/config');
+    if (response) {
+      return await httpClient.post('/login', { ...data }) && onSuccess();
     }
-    else {
+    return onSetup();
+  } catch ({ response: { status, data: description } }) {
+    if (status === 401) {
+      onError();
       toastError({
-        title: "Error",
-        description: `Ha ocurrido un error de status ${status}, por favor intente mas tarde`
-      })
+        title: 'Error',
+        description,
+      });
+    } else {
+      toastError({
+        title: 'Error',
+        description: `Ha ocurrido un error de status ${status}, por favor intente mas tarde`,
+      });
     }
   }
+};
 
-}
-
-const Login = ({ onSuccess }) => {
+const Login = ({ onSuccess, onSetup }) => {
   const [usuario, setUsuario] = useState('CorteElectoral');
   const [password, setPassword] = useState('CorteElectoral');
 
@@ -43,13 +46,12 @@ const Login = ({ onSuccess }) => {
     isClosable: true,
   });
 
-  const toastError = ({ title, description }) => toast({ title, description })
-
+  const toastError = ({ title, description }) => toast({ title, description });
 
   const onError = () => {
     setUsuario('');
     setPassword('');
-  }
+  };
 
   return (
     <Center w="100%" h="100vh">
@@ -64,10 +66,10 @@ const Login = ({ onSuccess }) => {
         <br />
         <Input type="password" id="pass" value={password} onChange={e => setPassword(e.target.value)} />
         <br />
-        <CustomButton onClick={() => submit({ onSuccess, data: { usuario, password }, onError, toastError })} label="Login" />
+        <CustomButton onClick={() => submit({ onSuccess, onSetup, data: { usuario, password }, onError, toastError })} label="Login" />
       </Flex>
     </Center>
   );
-}
+};
 
 export default Login;

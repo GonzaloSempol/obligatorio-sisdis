@@ -9,12 +9,12 @@ const App = () => {
   // setPage('login');
 
   if (page === 'vote') {
-    return <Vote onSuccess={() => setPage('logout')} onExit={() => setPage('login')} />
+    return <Vote onSuccess={() => setPage('logout')} onExit={() => setPage('login')} />;
   }
   if (page === 'logout') {
-    return <Logout onSuccess={() => setPage('login')} />
+    return <Logout onSuccess={() => setPage('login')} />;
   }
-  return <Login onSuccess={() => setPage('vote')} />
-}
+  return <Login onSuccess={() => setPage('vote')} />;
+};
 
 export default App;

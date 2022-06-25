@@ -1,36 +1,35 @@
+/* eslint-disable jsx-a11y/label-has-associated-control */
+/* eslint-disable consistent-return */
+/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
+import { Input, Center, Flex, useToast } from '@chakra-ui/react';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
-import { Input, Center, Flex, useToast } from '@chakra-ui/react'
-
 
 const submit = async ({ data, onSuccess, onError, toastError }) => {
-
   const { ci, password } = data;
   if (!ci || !password) {
     return toastError({
-      description: "Complete todos los campos"
-    })
+      description: 'Complete todos los campos',
+    });
   }
   try {
     return await httpClient.post('/login', { ...data }) && onSuccess();
-  } catch ({ response: { status, data } }) {
+  } catch ({ response: { status, data: description } }) {
     if (status === 401) {
-      onError()
+      onError();
       toastError({
-        title: "Error",
-        description: data
-      })
-    }
-    else {
+        title: 'Error',
+        description,
+      });
+    } else {
       toastError({
-        title: "Error",
-        description: `Ha ocurrido un error de status ${status}, por favor intente mas tarde`
-      })
+        title: 'Error',
+        description: `Ha ocurrido un error de status ${status}, por favor intente mas tarde`,
+      });
     }
   }
-
-}
+};
 
 const Login = ({ onSuccess }) => {
   const [ci, setCi] = useState('1000002');
@@ -43,13 +42,12 @@ const Login = ({ onSuccess }) => {
     isClosable: true,
   });
 
-  const toastError = ({ title, description }) => toast({ title, description })
-
+  const toastError = ({ title, description }) => toast({ title, description });
 
   const onError = () => {
     setCi('');
     setPassword('');
-  }
+  };
 
   return (
     <Center w="100%" h="100vh">
@@ -68,6 +66,6 @@ const Login = ({ onSuccess }) => {
       </Flex>
     </Center>
   );
-}
+};
 
 export default Login;

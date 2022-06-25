@@ -18,17 +18,24 @@
         "react"
     ],
     "rules": {
+        "react/function-component-definition": [
+            2,
+            {
+                "namedComponents": "arrow-function",
+                "unnamedComponents": "arrow-function"
+            }
+        ],
         "object-curly-newline": [
             "error",
             {
-                "ObjectExpression": "always",
                 "ObjectPattern": {
                     "multiline": true
                 },
-                "ImportDeclaration": "never",
+                "ImportDeclaration": {
+                    "multiline": true
+                },
                 "ExportDeclaration": {
-                    "multiline": true,
-                    "minProperties": 3
+                    "multiline": true
                 }
             }
         ],
@@ -36,7 +43,7 @@
             "error",
             "as-needed",
             {
-                "requireForBlockBody": true,
+                "requireForBlockBody": true
             }
         ]
     }
