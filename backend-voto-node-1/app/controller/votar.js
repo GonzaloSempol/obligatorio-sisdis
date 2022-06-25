@@ -7,6 +7,19 @@ const departamentos = require("../db/hardcode/departamentos")
 const circuitos = require("../db/hardcode/circuitos")
 const Config = require("../db/mongoVotos/schemas/config")
 const globalTime = require('global-time')
+const { DB_CRYPTO_PASS } = require('../config');
+
+
+const crypto = require('crypto');
+ 
+// Defining algorithm
+const algorithm = 'aes-256-cbc';
+ 
+// Defining key
+const key = DB_CRYPTO_PASS;
+ 
+// Defining iv
+const iv = 101;
 
 
 async function votar(req, res, next) {
@@ -51,12 +64,19 @@ async function votar(req, res, next) {
 
 async function insertarVoto(partido, departamento, circuito) {
     try {
-        const voto = new Voto({ partido: partido, departamento: departamento, circuito: circuito })
+        
+        console.log(partido, departamento, circuito)
+        const {encryptedData : partidoEncrypted} = encrypt(partido)
+
+        console.log("Hola", partidoEncrypted); //34feb914c099df25794bf9ccb85bea72
+        
+
+        const voto = new Voto({ partido: partidoEncrypted, departamento: departamento, circuito: circuito })
         const response = await voto.save()
         console.log("response:" + response)
     } catch (err) {
-        console.log("Error al insertar voto: " + err.message)
-        console.log("Error detalle: " + err.error.age)
+        console.log("Error al insertar voto: " + err)
+        
     }
 }
 
@@ -64,7 +84,7 @@ async function chequearHaVotado(ci) {
     try {
         return HaVotado.findById(ci);
     } catch (err) {
-        console.log("Error al buscar si ha votado: " + err.message)
+        console.log("Error al buscar si ha votado: " + err)
     }
 }
 async function insertarHaVotado(ci, departamento, circuito) {
@@ -117,6 +137,24 @@ async function esVotacionEnCurso() {
 
 }
 
+
+// An encrypt function
+function encrypt(text) {
+ 
+    // Creating Cipheriv with its parameter
+    let cipher = crypto.createCipheriv(
+         'aes-256-cbc', Buffer.from(key), iv);
+    
+    // Updating text
+    let encrypted = cipher.update(text);
+    
+    // Using concatenation
+    encrypted = Buffer.concat([encrypted, cipher.final()]);
+    
+    // Returning iv and encrypted data
+    return { iv: iv.toString('hex'),
+       encryptedData: encrypted.toString('hex') };
+   }
 
 
 
