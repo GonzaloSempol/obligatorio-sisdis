@@ -13,7 +13,7 @@ import {
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
 
-const Results = ({ onExit }) => {
+const Results = ({ onConfig, onExit }) => {
   const [votos, setVotos] = useState([]);
 
   const toast = useToast({
@@ -53,7 +53,11 @@ const Results = ({ onExit }) => {
           ))}
         </StatGroup>
 
-        <Flex direction="row-reverse">
+        <Flex justify="space-between">
+          <CustomButton
+            onClick={onConfig}
+            label="Crear Nueva Eleccion"
+          />
           <CustomButton
             onClick={onExit}
             label="Salir"

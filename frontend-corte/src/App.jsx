@@ -9,7 +9,7 @@ const App = () => {
   const [page, setPage] = useState('login');
 
   if (page === 'results') {
-    return <Results onExit={() => setPage('login')} />;
+    return <Results onConfig={() => setPage('config')} onExit={() => setPage('login')} />;
   }
   if (page === 'config') {
     return <Config onExit={() => setPage('login')} onSuccess={() => setPage('logout')} />;
