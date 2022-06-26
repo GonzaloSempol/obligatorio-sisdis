@@ -35,6 +35,7 @@ const CalendarInput = forwardRef(({ value, onClick }, ref) => (
 
 const submit = async ({ data, onSuccess, onExit, toastError }) => {
   const { startDate, endDate } = data;
+
   if (startDate > endDate) {
     return toastError({
       description: 'La fecha de finalizacion debe ser mayor a la de inicio',

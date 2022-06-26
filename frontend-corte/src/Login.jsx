@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import { Input, Center, Flex, useToast } from '@chakra-ui/react';
-import { parse, format } from 'fecha';
+import dayjs from 'dayjs';
 import { httpClient } from './httpClient';
 import CustomButton from './CustomButton';
 
@@ -16,8 +16,6 @@ const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
   }
 
   try {
-    // deberia chequearse luego de loguearse no antes, sino hay que hacer /config publico
-    //
     const loginResponse = await httpClient.post('/login', { ...data });
     if (loginResponse.status === 200) {
       const { data: configResponse } = await httpClient.get('/config');
@@ -28,17 +26,15 @@ const submit = async ({ data, onSuccess, onSetup, onError, toastError }) => {
         return onSetup();
       }
     }
-
-    // return
   } catch ({ response: { status, data: description } }) {
     if (status === 401) {
       onError();
       if (description.habilitadoVerVotos === false) {
-        const fechaFormat = format(parse(description.endDate, 'isoDateTime', 'YYYY-MM-DD hh:mm:ss'));
+        const fechaFormat = dayjs(description.endDate).format('YYYY-MM-DD hh:mm:ss A');
 
         toastError({
           title: 'Error',
-          description: (`La votacion finalizará el: ${fechaFormat}`),
+          description: (`La votacion finalizará el ${fechaFormat}`),
         });
       } else {
         toastError({

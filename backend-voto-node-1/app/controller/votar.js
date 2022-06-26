@@ -7,26 +7,19 @@ const departamentos = require("../db/hardcode/departamentos")
 const circuitos = require("../db/hardcode/circuitos")
 const Config = require("../db/mongoVotos/schemas/config")
 const globalTime = require('global-time')
-const { DB_CRYPTO_PASS } = require('../config');
+const rsa = require('node-rsa');
+const { RSA_PRIVATE_PASS } = require('../config');
 
+let privateKey = new rsa();
 
-const crypto = require('crypto');
- 
-// Defining algorithm
-const algorithm = 'aes-256-cbc';
- 
-// Defining key
-const key = DB_CRYPTO_PASS;
- 
-// Defining iv
-const iv = 101;
+privateKey.importKey(RSA_PRIVATE_PASS);
 
 
 async function votar(req, res, next) {
 
-    if(await esVotacionEnCurso()){
+    if (await esVotacionEnCurso()) {
 
-    
+
         const { body: { partido, departamento, circuito } } = req;
 
         const responseHaVotado = await chequearHaVotado(req.session.ci);
@@ -47,16 +40,14 @@ async function votar(req, res, next) {
 
                 return res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
             } else {
-            return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
+                return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
             }
         } else {
             return res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
         }
-    }else{
+    } else {
         return res.status(409).send(`Error: No hay votación en curso`)
     }
-
-
 
 }
 
@@ -64,19 +55,13 @@ async function votar(req, res, next) {
 
 async function insertarVoto(partido, departamento, circuito) {
     try {
-        
-        console.log(partido, departamento, circuito)
-        const {encryptedData : partidoEncrypted} = encrypt(partido)
-
-        console.log("Hola", partidoEncrypted); //34feb914c099df25794bf9ccb85bea72
-        
+        const partidoEncrypted = privateKey.encryptPrivate(partido, 'base64');
 
         const voto = new Voto({ partido: partidoEncrypted, departamento: departamento, circuito: circuito })
-        const response = await voto.save()
-        console.log("response:" + response)
+        return voto.save();
     } catch (err) {
-        console.log("Error al insertar voto: " + err)
-        
+        console.log("Error al insertar voto: " + err);
+
     }
 }
 
@@ -113,56 +98,24 @@ function esCircuitoValido(circuito) {
 }
 
 
-////
-
-
 async function esVotacionEnCurso() {
- try{  
+    try {
         const time = await globalTime();
         const currentTime = new Date(time);
         //chequeamos que estemos en un proceso de votacion en este momento.
-        const dbResponse = await Config.findOne().sort({created_at: -1})
-            
-            
-            if( currentTime >= dbResponse.startDate && currentTime <= dbResponse.endDate ){
-                return true;
-            }
-            return false;
-            
-    } catch(err){
+        const dbResponse = await Config.findOne().sort({ created_at: -1 })
+
+        if (currentTime >= dbResponse.startDate && currentTime <= dbResponse.endDate) {
+            return true;
+        }
+        return false;
+
+    } catch (err) {
         console.log("Error" + err.message)
         return false;
-    }   
-
+    }
 
 }
-
-
-// An encrypt function
-function encrypt(text) {
- 
-    // Creating Cipheriv with its parameter
-    let cipher = crypto.createCipheriv(
-         'aes-256-cbc', Buffer.from(key), iv);
-    
-    // Updating text
-    let encrypted = cipher.update(text);
-    
-    // Using concatenation
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    
-    // Returning iv and encrypted data
-    return { iv: iv.toString('hex'),
-       encryptedData: encrypted.toString('hex') };
-   }
-
-
-
-
-
-////
-
-
 
 
 module.exports = votar

@@ -7,13 +7,19 @@ const departamentos = require("../db/hardcode/departamentos")
 const circuitos = require("../db/hardcode/circuitos")
 const Config = require("../db/mongoVotos/schemas/config")
 const globalTime = require('global-time')
+const rsa = require('node-rsa');
+const { RSA_PRIVATE_PASS } = require('../config');
+
+let privateKey = new rsa();
+
+privateKey.importKey(RSA_PRIVATE_PASS);
 
 
 async function votar(req, res, next) {
 
-    if(await esVotacionEnCurso()){
+    if (await esVotacionEnCurso()) {
 
-    
+
         const { body: { partido, departamento, circuito } } = req;
 
         const responseHaVotado = await chequearHaVotado(req.session.ci);
@@ -34,16 +40,14 @@ async function votar(req, res, next) {
 
                 return res.send(`${req.session.ci} ha votado correctamente al partido ${partido} en el departamento ${departamento} y circuito ${circuito}`)
             } else {
-            return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
+                return res.status(409).send(`Error: ${req.session.ci} Ya ha votado`)
             }
         } else {
             return res.status(409).send(`Error: Partido Departamento o Circuito invalido`)
         }
-    }else{
+    } else {
         return res.status(409).send(`Error: No hay votación en curso`)
     }
-
-
 
 }
 
@@ -51,12 +55,13 @@ async function votar(req, res, next) {
 
 async function insertarVoto(partido, departamento, circuito) {
     try {
-        const voto = new Voto({ partido: partido, departamento: departamento, circuito: circuito })
-        const response = await voto.save()
-        console.log("response:" + response)
+        const partidoEncrypted = privateKey.encryptPrivate(partido, 'base64');
+
+        const voto = new Voto({ partido: partidoEncrypted, departamento: departamento, circuito: circuito })
+        return voto.save();
     } catch (err) {
-        console.log("Error al insertar voto: " + err.message)
-        console.log("Error detalle: " + err.error.age)
+        console.log("Error al insertar voto: " + err);
+
     }
 }
 
@@ -64,7 +69,7 @@ async function chequearHaVotado(ci) {
     try {
         return HaVotado.findById(ci);
     } catch (err) {
-        console.log("Error al buscar si ha votado: " + err.message)
+        console.log("Error al buscar si ha votado: " + err)
     }
 }
 async function insertarHaVotado(ci, departamento, circuito) {
@@ -93,38 +98,24 @@ function esCircuitoValido(circuito) {
 }
 
 
-////
-
-
 async function esVotacionEnCurso() {
- try{  
+    try {
         const time = await globalTime();
         const currentTime = new Date(time);
         //chequeamos que estemos en un proceso de votacion en este momento.
-        const dbResponse = await Config.findOne().sort({created_at: -1})
-            
-            
-            if( currentTime >= dbResponse.startDate && currentTime <= dbResponse.endDate ){
-                return true;
-            }
-            return false;
-            
-    } catch(err){
+        const dbResponse = await Config.findOne().sort({ created_at: -1 })
+
+        if (currentTime >= dbResponse.startDate && currentTime <= dbResponse.endDate) {
+            return true;
+        }
+        return false;
+
+    } catch (err) {
         console.log("Error" + err.message)
         return false;
-    }   
-
+    }
 
 }
-
-
-
-
-
-
-////
-
-
 
 
 module.exports = votar

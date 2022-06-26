@@ -45,7 +45,7 @@ const Results = ({ onExit }) => {
       <Flex direction="column" w="50%" gap={30}>
         <Heading>Resultados elecciones</Heading>
         <StatGroup gap={20}>
-          {votos.map(({ _id: partido, count: numVotos }) => (
+          {votos.map(({ partido, count: numVotos }) => (
             <Stat>
               <StatLabel>{partido}</StatLabel>
               <StatNumber>{numVotos}</StatNumber>
