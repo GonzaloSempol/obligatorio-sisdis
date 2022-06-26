@@ -16,7 +16,6 @@
     "express-session": "^1.17.3",
     "global-time": "^1.5.1",
     "mongoose": "^6.3.3",
-    "node-rsa": "^1.1.1",
     "redis": "^4.1.0"
   },
   "devDependencies": {

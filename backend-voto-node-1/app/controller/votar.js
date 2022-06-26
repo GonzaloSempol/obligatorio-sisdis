@@ -7,12 +7,22 @@ const departamentos = require("../db/hardcode/departamentos")
 const circuitos = require("../db/hardcode/circuitos")
 const Config = require("../db/mongoVotos/schemas/config")
 const globalTime = require('global-time')
-const rsa = require('node-rsa');
-const { RSA_PRIVATE_PASS } = require('../config');
 
-let privateKey = new rsa();
+const {DB_CRYPTO_PASS, DB_CRYPTO_PASS_IV } = require('../config');
+const Crypto = require('crypto');
+const secret_key = DB_CRYPTO_PASS;
+const secret_iv = DB_CRYPTO_PASS_IV;
+const algorithm = 'AES-256-CBC';
+const key = Crypto.createHash('sha256').update(secret_key, 'utf-8').digest('hex').substring(0,32);
+const iv = Crypto.createHash('sha256').update(secret_iv, 'utf-8').digest('hex').substring(0,16);
 
-privateKey.importKey(RSA_PRIVATE_PASS);
+
+
+function encrypt(text){
+    var cipher = Crypto.createCipheriv(algorithm, key, iv)
+    var aesCrypted = cipher.update(text, 'utf-8', 'base64') + cipher.final('base64')
+    return Buffer.from(aesCrypted).toString('base64'); 
+}
 
 
 async function votar(req, res, next) {
@@ -55,7 +65,7 @@ async function votar(req, res, next) {
 
 async function insertarVoto(partido, departamento, circuito) {
     try {
-        const partidoEncrypted = privateKey.encryptPrivate(partido, 'base64');
+        const partidoEncrypted = encrypt(partido);
 
         const voto = new Voto({ partido: partidoEncrypted, departamento: departamento, circuito: circuito })
         return voto.save();
