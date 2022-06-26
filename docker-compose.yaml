@@ -6,7 +6,7 @@ services:
   db-votos-mongo:
     image: mongo:4.4.14
     ports:
-      - 27017:27017 #solo para testing, lo publica hacia fuera
+      - 27017:27017 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
@@ -15,21 +15,21 @@ services:
   db-auth-redis:
     build: './db-auth-redis'
     ports:
-      - 6380:6379 #solo para testing, lo publica hacia fuera
+      - 6380:6379 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
   
   #guarda todas las sesiones activas
   db-sessions-redis:
     image: redis:7.0.0
     #build: './db-sessions-redis'
     ports:
-      - 6379:6379 #solo para testing, lo publica hacia fuera
+      - 6379:6379 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
   #------------------------------------------------------------------------
   
   #LOAD BALANCER-----------------------------------------------------------
   loadbalancer-nginx:
     build: ./loadbalancer-nginx
     ports:
-      - "80:80"
+      - "80:80" #Unico puerto que se publica hacia fuera en producción.
     depends_on:
       - backend-voto-node-1
       - backend-voto-node-2
@@ -44,7 +44,7 @@ services:
       - db-votos-mongo
       - db-auth-redis
     ports: 
-      - 8080:8080
+      - 8080:8080 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
     volumes:
        - './backend-voto-node-1/app:/app'
   backend-voto-node-2:
@@ -53,7 +53,7 @@ services:
       - db-votos-mongo
       - db-auth-redis
     ports: 
-      - 8090:8080
+      - 8090:8080 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
     volumes:
        - './backend-voto-node-2/app:/app'
 
@@ -63,7 +63,7 @@ services:
       - db-votos-mongo
       - db-auth-redis
     ports: 
-      - 8081:8080
+      - 8081:8080 #Estos puertos son solo para desarrollo, deberan quitarse en produccion
     volumes:
        - './backend-corte-node/app:/app'
 
